@@ -27,11 +27,11 @@ const userSchema = new Schema(
             trim: true,
         },
         avatar: {
-            type: string, // cloudfront url
+            type: String, // cloudfront url
             required: true,
         },
         coverImage: {
-            type: string, // cloudfront url
+            type: String, // cloudfront url
 
         },
         watchHistory: [
@@ -55,11 +55,10 @@ const userSchema = new Schema(
 )
 
 userSchema.pre("save", async function (next) {
-    if (!this.isModified(this.password)) {
-        return next();
+ 
 
-    }
-    this.password = bcrypt.hash(this.password, 10)
+    if(!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 
 })
